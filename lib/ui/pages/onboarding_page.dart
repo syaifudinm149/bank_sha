@@ -2,8 +2,26 @@ import 'package:bank_sha/shared/theme.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-class OnboardingPage extends StatelessWidget {
+class OnboardingPage extends StatefulWidget {
   const OnboardingPage({Key? key}) : super(key: key);
+
+  @override
+  State<OnboardingPage> createState() => _OnboardingPageState();
+}
+
+class _OnboardingPageState extends State<OnboardingPage> {
+  int currentIndex = 0;
+  CarouselController carouselController = CarouselController();
+  List<String> titles = [
+    'Grow Your\nFinancial Today',
+    'Build From\nZero to Freedom',
+    'Start Together'
+  ];
+  List<String> subTitles = [
+    'Our system is helping you to\nachieve a better goal',
+    'We provide tips for you so that\nyou can adapt easier',
+    'We will guide you to where\nyou wanted it too'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +50,13 @@ class OnboardingPage extends StatelessWidget {
                   height: 331,
                   viewportFraction: 1,
                   enableInfiniteScroll: false,
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      currentIndex = index;
+                    });
+                  },
                 ),
+                carouselController: carouselController,
               ),
               const SizedBox(
                 height: 80,
@@ -52,7 +76,7 @@ class OnboardingPage extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      'Grow Your\nFinancial Today',
+                      titles[currentIndex],
                       style: blackTextStyle.copyWith(
                         fontSize: 20,
                         fontWeight: semiBold,
@@ -63,7 +87,7 @@ class OnboardingPage extends StatelessWidget {
                       height: 26,
                     ),
                     Text(
-                      'Our system is helping you to\nachieve a better goal',
+                      subTitles[currentIndex],
                       style: greyTextStyle.copyWith(
                         fontSize: 16,
                       ),
@@ -82,7 +106,9 @@ class OnboardingPage extends StatelessWidget {
                           ),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: blueColor,
+                            color: currentIndex == 0
+                                ? blueColor
+                                : lightBackgroundColor,
                           ),
                         ),
                         Container(
@@ -93,7 +119,9 @@ class OnboardingPage extends StatelessWidget {
                           ),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: lightBackgroundColor,
+                            color: currentIndex == 1
+                                ? blueColor
+                                : lightBackgroundColor,
                           ),
                         ),
                         Container(
@@ -104,7 +132,9 @@ class OnboardingPage extends StatelessWidget {
                           ),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: lightBackgroundColor,
+                            color: currentIndex == 2
+                                ? blueColor
+                                : lightBackgroundColor,
                           ),
                         ),
                         const Spacer(),
@@ -112,7 +142,9 @@ class OnboardingPage extends StatelessWidget {
                           width: 150,
                           height: 50,
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              carouselController.nextPage();
+                            },
                             style: TextButton.styleFrom(
                               backgroundColor: purpleColor,
                               shape: RoundedRectangleBorder(
